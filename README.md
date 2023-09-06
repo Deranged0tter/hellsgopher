@@ -42,3 +42,39 @@ ZipFiles(files []string, zipFileName string) error
 DoesFileExist(filepath string) bool
     check if a file exists. return true if it does
 ```
+
+## Encryption
+```
+Base64EncodeStr(message string) string
+    encode a string to base64 and return a string
+
+Base64DecodeStr(message string) (string, error)
+    decode a string from base64 and return a string
+
+MD5SumStr(message string) string
+    get the md5 hash of a string
+
+MD5SumFile(filepath string) string
+    get the md5 hash of a file
+
+Sha1Str(message string) string
+    get the sha1 hash of a string
+
+Sha1File(filepath string) string
+    get the sha1 hash of a file
+
+Sha256Str(message string) string
+    get the sha256 hash of a string
+
+Sha256File(filepath string) string
+    get the sha256 hash of a file
+
+Sha512Str(message string) string
+    get the sha512 hash of a string
+
+Sha512File(filepath string) string
+    get the sha512 hash of a file
+
+Caesar(message string, shift int) (string, error)
+    caesar cipher
+```
