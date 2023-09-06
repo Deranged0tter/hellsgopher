@@ -24,3 +24,21 @@ PSSTDOUT(command string)
 PSNoOut(command string)
     runs a command with `powershell -Command "& {}"` and will provide no output
 ```
+
+## File Manipulation
+```
+CopyFile(source string, destination string) error
+    copy a file
+
+MoveFile(source string, destination string) error
+    move a file
+
+Chmod(filepath string, permissions os.FileMode) error
+    change the permissions of a file
+
+ZipFiles(files []string, zipFileName string) error
+    takes a slice of file paths and creates a zip archive. zipFileName should not include ".zip"
+
+DoesFileExist(filepath string) bool
+    check if a file exists. return true if it does
+```
