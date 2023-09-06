@@ -2,6 +2,9 @@ package hellsgopher
 
 import (
 	"crypto/md5"
+	"crypto/sha1"
+	"crypto/sha256"
+	"crypto/sha512"
 	"encoding/base64"
 	"encoding/hex"
 	"io"
@@ -42,40 +45,73 @@ func MD5SumFile(filepath string) string {
 	hash := md5.New()
 	io.Copy(hash, file)
 
-	return string(hash.Sum(nil))
+	return hex.EncodeToString(hash.Sum(nil))
 }
 
 // get the sha1 hash of a string
 func Sha1Str(message string) string {
-	return ""
+	hash := sha1.Sum([]byte(message))
+	return hex.EncodeToString(hash[:])
 }
 
 // get the sha1 hash of a file
 func Sha1File(filepath string) string {
-	return ""
+	if !DoesFileExist(filepath) {
+		return ""
+	}
+
+	file, _ := os.Open(filepath)
+	defer file.Close()
+
+	hash := sha1.New()
+	io.Copy(hash, file)
+
+	return hex.EncodeToString(hash.Sum(nil))
 }
 
 // get the sha256 hash of a string
 func Sha256Str(message string) string {
-	return ""
+	hash := sha256.Sum256([]byte(message))
+	return hex.EncodeToString(hash[:])
 }
 
 // get the sha256 hash of a file
 func Sha256File(filepath string) string {
-	return ""
+	if !DoesFileExist(filepath) {
+		return ""
+	}
+
+	file, _ := os.Open(filepath)
+	defer file.Close()
+
+	hash := sha256.New()
+	io.Copy(hash, file)
+
+	return hex.EncodeToString(hash.Sum(nil))
 }
 
 // get the sha512 hash of a string
 func Sha512Str(message string) string {
-	return ""
+	hash := sha512.Sum512([]byte(message))
+	return hex.EncodeToString(hash[:])
 }
 
 // get the sha512 hash of a file
 func Sha512File(filepath string) string {
-	return ""
+	if !DoesFileExist(filepath) {
+		return ""
+	}
+
+	file, _ := os.Open(filepath)
+	defer file.Close()
+
+	hash := sha512.New()
+	io.Copy(hash, file)
+
+	return hex.EncodeToString(hash.Sum(nil))
 }
 
 // caesar cipher
-func Caesar(message string, shift int) string {
-	return ""
+func Caesar(message string, shift int) (string, error) {
+	return "", ErrFuncNotSupported
 }
