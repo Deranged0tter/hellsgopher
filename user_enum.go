@@ -1,6 +1,8 @@
 package hellsgopher
 
-import "os/user"
+import (
+	"os/user"
+)
 
 // returns the username of the user the process is running under
 func GetUsername() (string, error) {
@@ -40,4 +42,9 @@ func GetGID() (string, error) {
 	}
 
 	return currentUser.Gid, nil
+}
+
+// list all the users on the systen
+func ListUsers() ([]string, error) {
+	return nil, ErrFuncNotSupported
 }
