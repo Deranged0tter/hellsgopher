@@ -78,3 +78,21 @@ Sha512File(filepath string) string
 Caesar(message string, shift int) (string, error)
     caesar cipher
 ```
+
+## User Enumeration
+```
+GetUsername() (string, error)
+    returns the username of the user the process is running under
+
+GetDisplayName() (string, error)
+    returns the display name of the user the process is running under
+
+GetUID() (string, error)
+    returns the user id of the user the process is running under
+
+GetGID() (string, error)
+    returns the group id of the user the process is running under
+
+ListUsers() ([]string, error)
+    list all the users on the systen
+```
