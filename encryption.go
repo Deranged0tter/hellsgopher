@@ -11,6 +11,16 @@ import (
 	"os"
 )
 
+// return a random integer between min and max (both inclusive)
+func RandomInt(min int, max int) int {
+	return 0
+}
+
+// generate a random string of length length (Uses a-zA-Z)
+func RandomStr(length int) string {
+	return ""
+}
+
 // encode a string to base64 and return a string
 func Base64EncodeStr(message string) string {
 	encoded := base64.StdEncoding.EncodeToString([]byte(message))

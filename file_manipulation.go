@@ -69,6 +69,26 @@ func ZipFiles(files []string, zipFileName string) error {
 	return nil
 }
 
+// list files in a given directory
+func ListFiles(directory string) ([]string, error) {
+	return nil, nil
+}
+
+// list files in current directory
+func ListFilesInPWD() ([]string, error) {
+	return nil, nil
+}
+
+// list files in a given directory recursivley
+func ListFilesR(directory string) ([]string, error) {
+	return nil, nil
+}
+
+// list files in current directory recursivley
+func ListFilesInPWDR() ([]string, error) {
+	return nil, nil
+}
+
 // check if a file exists. return true if it does
 func DoesFileExist(filepath string) bool {
 	if _, err := os.Stat(filepath); errors.Is(err, os.ErrNotExist) {
@@ -76,4 +96,34 @@ func DoesFileExist(filepath string) bool {
 	}
 
 	return true
+}
+
+// download a file from source url to destination. if destination is left blank, will default to current directory with same filename from url
+func DownloadFile(source string, destination string) error {
+	return nil
+}
+
+// read a file line by line, putting each line into a slice
+func ReadFileToSlice(filepath string) ([]string, error) {
+	return nil, nil
+}
+
+// read a file and return a string of its content
+func ReadFileToStr(filepath string) (string, error) {
+	return "", nil
+}
+
+// clears the content of a file
+func ClearFile(filepath string) {
+
+}
+
+// prepends a string to a file
+func PrependToFile(filepath string, content string) {
+
+}
+
+// append a string to a file
+func AppendToFile(filepath string, content string) {
+
 }
