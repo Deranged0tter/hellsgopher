@@ -2,18 +2,27 @@ package hellsgopher
 
 import (
 	"crypto/md5"
+	"crypto/rand"
 	"crypto/sha1"
 	"crypto/sha256"
 	"crypto/sha512"
 	"encoding/base64"
 	"encoding/hex"
 	"io"
+	"math/big"
 	"os"
 )
 
 // return a random integer between min and max (both inclusive)
-func RandomInt(min int, max int) int {
-	return 0
+func RandomInt(min int64, max int64) int64 {
+	bg := big.NewInt(max - min)
+
+	n, err := rand.Int(rand.Reader, bg)
+	if err != nil {
+		panic(err)
+	}
+
+	return n.Int64() + min
 }
 
 // generate a random string of length length (Uses a-zA-Z)
