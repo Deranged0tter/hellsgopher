@@ -1,4 +1,5 @@
 # hellsgopher
+<img src="https://github.com/Deranged0tter/hellsgopher/blob/main/logo/logo.PNG?raw=true" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="250" height="250" />
 Go library for malware development
 
 # ⚠️ THIS IS CURRENTLY UNDER DEVELOPMENT ⚠️
