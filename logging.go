@@ -11,7 +11,7 @@ func Error(message string) {
 }
 
 // output success mesage to STDOUT
-func Success(message string) {
+func Okay(message string) {
 	print("[+] " + message + "\n")
 }
 

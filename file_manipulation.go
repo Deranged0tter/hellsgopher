@@ -40,6 +40,11 @@ func MoveFile(source string, destination string) error {
 	return err
 }
 
+// delete a file
+func DeleteFile(filepath string) error {
+	return nil
+}
+
 // change the permissions of a file
 func Chmod(filepath string, permissions os.FileMode) error {
 	err := os.Chmod(filepath, permissions)

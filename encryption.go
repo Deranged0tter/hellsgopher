@@ -13,7 +13,6 @@ import (
 	"math/rand"
 	"os"
 	"strings"
-	"time"
 )
 
 const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -32,8 +31,6 @@ func RandomInt(min int64, max int64) int64 {
 
 // generate a random string of length length (Uses a-zA-Z)
 func RandomStr(length int) string {
-	rand.Seed(time.Now().UnixNano())
-
 	sb := strings.Builder{}
 	sb.Grow(length)
 	for i := 0; i < length; i++ {

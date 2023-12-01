@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+// return a string equaling to "adj_noun"
 func GenerateName() string {
 	var (
 		adjs  = []string{"precious", "utter", "admirable", "sweltering", "afraid", "spiffy", "sunny", "decisive", "square", "pristine", "impractical", "elliptical", "buttery", "unselfish", "jubilant", "jealous", "bowed", "harmful", "somber", "livid", "ideal", "lucky", "trifling", "subtle", "pretty", "indelible", "disfigured", "nautical", "closed", "rosy", "gargantuan", "polite", "full", "arctic", "mortified", "fussy", "jumpy", "bountiful", "lazy", "small", "big", "defenseless", "ample", "nutty", "live", "charming", "obedient", "subdued", "stale", "reckless", "gummy", "shabby", "exotic", "true", "courageous", "worldly", "massive", "thoughtful", "daring", "decent", "physical", "neglected", "showy", "corny", "wealthy", "electric", "hairy", "circular", "blissful", "unused", "gleeful", "unlucky", "studious", "spotted", "plump", "bruised", "thorny", "infamous", "greedy", "zigzag", "busy", "virtuous", "dramatic", "grimy", "misguided", "appropriate", "ugly", "shady", "ruddy", "taut", "frail", "costly", "kooky", "tan", "stimulating", "knotty"}
