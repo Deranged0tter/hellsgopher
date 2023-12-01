@@ -1,7 +1,6 @@
 package hellsgopher
 
 import (
-	"fmt"
 	"os/exec"
 	"runtime"
 )
@@ -66,7 +65,7 @@ func PSReturn(command string) (string, error) {
 		return "", ErrNotWin
 	}
 
-	cmd := exec.Command("powershell", "-Command", fmt.Sprintf("\"& {%s}\"", command))
+	cmd := exec.Command("powershell.exe", command)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return "", err
@@ -81,7 +80,7 @@ func PSSTDOUT(command string) {
 		return
 	}
 
-	cmd := exec.Command("powershell", "-Command", fmt.Sprintf("\"& {%s}\"", command))
+	cmd := exec.Command("powershell.exe", command)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		Error(err.Error())
@@ -96,6 +95,6 @@ func PSNoOut(command string) {
 		return
 	}
 
-	cmd := exec.Command("powershell", "-Command", fmt.Sprintf("\"& {%s}\"", command))
+	cmd := exec.Command("powershell.exe", command)
 	cmd.CombinedOutput()
 }
