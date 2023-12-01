@@ -4,6 +4,11 @@ Go library for malware development
 
 # ⚠️ THIS IS CURRENTLY UNDER DEVELOPMENT ⚠️
 
+# To add to your project
+```
+go get github.com/deranged0tter/hellsgopher
+```
+
 # Functions
 ## Command Line Functions
 ```
