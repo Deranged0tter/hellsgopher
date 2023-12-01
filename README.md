@@ -17,13 +17,13 @@ CmdNoOut(command string)
     will run a command with either `bash -c` or `cmd /C` and will provide no output
 
 PSReturn(command string) (string, error)
-    runs a command with `powershell -Command "& {}"` and returns the output as a string
+    runs a command with `powershell.exe` and returns the output as a string
 
 PSSTDOUT(command string)
-    runs a command with `powershell -Command "& {}"` and prints the output and error to STDOUT
+    runs a command with `powershell.exe` and prints the output and error to STDOUT
 
 PSNoOut(command string)
-    runs a command with `powershell -Command "& {}"` and will provide no output
+    runs a command with `powershell.exe` and will provide no output
 ```
 
 ## File Manipulation
