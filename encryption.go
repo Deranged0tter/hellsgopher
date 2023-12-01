@@ -2,7 +2,7 @@ package hellsgopher
 
 import (
 	"crypto/md5"
-	"crypto/rand"
+	cr "crypto/rand"
 	"crypto/sha1"
 	"crypto/sha256"
 	"crypto/sha512"
@@ -10,14 +10,19 @@ import (
 	"encoding/hex"
 	"io"
 	"math/big"
+	"math/rand"
 	"os"
+	"strings"
+	"time"
 )
+
+const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 // return a random integer between min and max (both inclusive)
 func RandomInt(min int64, max int64) int64 {
 	bg := big.NewInt(max - min)
 
-	n, err := rand.Int(rand.Reader, bg)
+	n, err := cr.Int(cr.Reader, bg)
 	if err != nil {
 		panic(err)
 	}
@@ -27,7 +32,14 @@ func RandomInt(min int64, max int64) int64 {
 
 // generate a random string of length length (Uses a-zA-Z)
 func RandomStr(length int) string {
-	return ""
+	rand.Seed(time.Now().UnixNano())
+
+	sb := strings.Builder{}
+	sb.Grow(length)
+	for i := 0; i < length; i++ {
+		sb.WriteByte(charset[rand.Intn(len(charset))])
+	}
+	return sb.String()
 }
 
 // encode a string to base64 and return a string
