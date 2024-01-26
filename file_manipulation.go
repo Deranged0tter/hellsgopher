@@ -8,6 +8,7 @@ import (
 	"io/fs"
 	"net/http"
 	"os"
+	"path"
 	"path/filepath"
 )
 
@@ -64,6 +65,7 @@ func Chmod(path string, perms os.FileMode) error {
 
 // take a slice of file paths and creates a zip archive
 // note: zipFileName should not include ".zip"
+// paths should be relative to the archive path
 func ZipFiles(paths []string, zipFileName string) error {
 	zipFile, err := os.Create(zipFileName + ".zip")
 	if err != nil {
@@ -75,12 +77,22 @@ func ZipFiles(paths []string, zipFileName string) error {
 	defer zipWriter.Close()
 
 	for _, file := range paths {
-		toZip, err := os.Open(file)
+		fName := path.Base(file)
+
+		f, err := os.Open(file)
 		if err != nil {
 			return err
 		}
-		defer toZip.Close()
+		defer f.Close()
 
+		w, err := zipWriter.Create(fName)
+		if err != nil {
+			return err
+		}
+
+		if _, err := io.Copy(w, f); err != nil {
+			return err
+		}
 	}
 
 	return nil
