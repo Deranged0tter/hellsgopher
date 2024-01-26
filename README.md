@@ -309,3 +309,8 @@ DO NOT USE THIS FOR:
 - damaging actions to property you do not have direct permission to use this on
 
 Any use of this software for illegal actions is not the responsibility of the creator or any contributor of this project. We hold no liability for any actions taken by this software.
+
+# License
+This project is licensed under the GNU General Public License V3
+
+Copyright © 2024, Deranged0tter
