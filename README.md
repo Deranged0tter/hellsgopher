@@ -297,6 +297,7 @@ Info(message string)
 # 3rd Party Libraries
 ```
 github.com/fourcorelabs/wintoken
+github.com/go-ping/ping
 ```
 Thank you to the creators of these projects!
 
