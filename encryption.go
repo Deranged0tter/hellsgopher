@@ -6,6 +6,7 @@ import (
 	"crypto/sha1"
 	"crypto/sha256"
 	"crypto/sha512"
+	"encoding/base32"
 	"encoding/base64"
 	"encoding/hex"
 	"io"
@@ -15,39 +16,79 @@ import (
 	"strings"
 )
 
-const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-// return a random integer between min and max (both inclusive)
-func RandomInt(min int64, max int64) int64 {
-	bg := big.NewInt(max - min)
+// return a random int between min and max
+func RandomInt(min int, max int) (int, error) {
+	bg := big.NewInt(int64(max) - int64(min))
 
 	n, err := cr.Int(cr.Reader, bg)
 	if err != nil {
-		panic(err)
+		return 0, err
 	}
 
-	return n.Int64() + min
+	return int(n.Int64()) + min, nil
 }
 
-// generate a random string of length length (Uses a-zA-Z)
-func RandomStr(length int) string {
+// return a random string of length l
+// uses a-zA-Z
+func RandomStr(l int) string {
+	const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
 	sb := strings.Builder{}
-	sb.Grow(length)
-	for i := 0; i < length; i++ {
+	sb.Grow(l)
+	for i := 0; i < l; i++ {
 		sb.WriteByte(charset[rand.Intn(len(charset))])
 	}
 	return sb.String()
 }
 
-// encode a string to base64 and return a string
-func Base64EncodeStr(message string) string {
-	encoded := base64.StdEncoding.EncodeToString([]byte(message))
+// returns a random string combining letters and numbers of length l
+// uses a-zA-Z0-9
+func RandomStrI(l int) string {
+	const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
+	sb := strings.Builder{}
+	sb.Grow(l)
+	for i := 0; i < l; i++ {
+		sb.WriteByte(charset[rand.Intn(len(charset))])
+	}
+	return sb.String()
+}
+
+// returns a random string from provided charset of length l
+func RandomStrFromCharset(l int, charset string) string {
+	sb := strings.Builder{}
+	sb.Grow(l)
+	for i := 0; i < l; i++ {
+		sb.WriteByte(charset[rand.Intn(len(charset))])
+	}
+	return sb.String()
+}
+
+// encode a string to base64
+func Base64EncodeStr(s string) string {
+	encoded := base64.StdEncoding.EncodeToString([]byte(s))
 	return encoded
 }
 
-// decode a string from base64 and return a string
-func Base64DecodeStr(message string) (string, error) {
-	decoded, err := base64.StdEncoding.DecodeString(message)
+// decode a string from base64
+func Base64DecodeStr(s string) (string, error) {
+	decoded, err := base64.StdEncoding.DecodeString(s)
+	if err != nil {
+		return "", err
+	}
+
+	return string(decoded), nil
+}
+
+// encode a string to base32
+func Base32EncodeStr(s string) string {
+	encoded := base32.StdEncoding.EncodeToString([]byte(s))
+	return encoded
+}
+
+// decode a string from base32
+func Base32DecodeStr(s string) (string, error) {
+	decoded, err := base32.StdEncoding.DecodeString(s)
 	if err != nil {
 		return "", err
 	}
@@ -56,18 +97,18 @@ func Base64DecodeStr(message string) (string, error) {
 }
 
 // get the md5 hash of a string
-func MD5SumStr(message string) string {
-	hash := md5.Sum([]byte(message))
+func Md5String(s string) string {
+	hash := md5.Sum([]byte(s))
 	return hex.EncodeToString(hash[:])
 }
 
 // get the md5 hash of a file
-func MD5SumFile(filepath string) string {
-	if !DoesFileExist(filepath) {
+func Md5File(path string) string {
+	if !DoesFileExist(path) {
 		return ""
 	}
 
-	file, _ := os.Open(filepath)
+	file, _ := os.Open(path)
 	defer file.Close()
 
 	hash := md5.New()
@@ -77,18 +118,18 @@ func MD5SumFile(filepath string) string {
 }
 
 // get the sha1 hash of a string
-func Sha1Str(message string) string {
-	hash := sha1.Sum([]byte(message))
+func Sha1String(s string) string {
+	hash := sha1.Sum([]byte(s))
 	return hex.EncodeToString(hash[:])
 }
 
 // get the sha1 hash of a file
-func Sha1File(filepath string) string {
-	if !DoesFileExist(filepath) {
+func Sha1File(path string) string {
+	if !DoesFileExist(path) {
 		return ""
 	}
 
-	file, _ := os.Open(filepath)
+	file, _ := os.Open(path)
 	defer file.Close()
 
 	hash := sha1.New()
@@ -98,18 +139,18 @@ func Sha1File(filepath string) string {
 }
 
 // get the sha256 hash of a string
-func Sha256Str(message string) string {
-	hash := sha256.Sum256([]byte(message))
+func Sha256String(s string) string {
+	hash := sha256.Sum256([]byte(s))
 	return hex.EncodeToString(hash[:])
 }
 
 // get the sha256 hash of a file
-func Sha256File(filepath string) string {
-	if !DoesFileExist(filepath) {
+func Sha256File(path string) string {
+	if !DoesFileExist(path) {
 		return ""
 	}
 
-	file, _ := os.Open(filepath)
+	file, _ := os.Open(path)
 	defer file.Close()
 
 	hash := sha256.New()
@@ -119,18 +160,18 @@ func Sha256File(filepath string) string {
 }
 
 // get the sha512 hash of a string
-func Sha512Str(message string) string {
-	hash := sha512.Sum512([]byte(message))
+func Sha512String(s string) string {
+	hash := sha512.Sum512([]byte(s))
 	return hex.EncodeToString(hash[:])
 }
 
 // get the sha512 hash of a file
-func Sha512File(filepath string) string {
-	if !DoesFileExist(filepath) {
+func Sha512File(path string) string {
+	if !DoesFileExist(path) {
 		return ""
 	}
 
-	file, _ := os.Open(filepath)
+	file, _ := os.Open(path)
 	defer file.Close()
 
 	hash := sha512.New()
@@ -139,7 +180,18 @@ func Sha512File(filepath string) string {
 	return hex.EncodeToString(hash.Sum(nil))
 }
 
-// caesar cipher
-func Caesar(message string, shift int) (string, error) {
-	return "", ErrFuncNotSupported
+// rot cipher
+func RotX(s string, shift rune) string {
+	result := make([]string, 0, len(s))
+	for _, chr := range s {
+		if 'a' <= chr && chr <= 'z' {
+			chr = ((chr - 'a' + shift) % 26) + 'a'
+		}
+		if 'A' <= chr && chr <= 'Z' {
+			chr = ((chr - 'A' + shift) % 26) + 'A'
+		}
+		result = append(result, string(chr))
+	}
+	output := strings.Join(result, "")
+	return output
 }

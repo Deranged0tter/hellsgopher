@@ -2,99 +2,103 @@ package hellsgopher
 
 import (
 	"os/exec"
-	"runtime"
+	"syscall"
+
+	"golang.org/x/sys/windows"
 )
 
-// will run a command with either `bash -c` or `cmd /C` and return the output
+// will run cmd.exe and return output
 func CmdReturn(command string) (string, error) {
-	var cmd *exec.Cmd
-	if runtime.GOOS == "linux" {
-		cmd = exec.Command("bash", "-c", command)
-	} else if runtime.GOOS == "windows" {
-		cmd = exec.Command("cmd", "/C", command)
-	} else {
-		return "", ErrUnknownGOOS
-	}
+	cmdPath := "C:\\Windows\\system32\\cmd.exe"
+	cmdInstance := exec.Command(cmdPath, "/c", command)
+	cmdInstance.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+	cmdOut, err := cmdInstance.Output()
 
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		return "", err
-	}
-
-	return string(output), nil
+	return string(cmdOut), err
 }
 
-// will run a command with either `bash -c` or `cmd /C` and print output and error to STDOUT
-func CmdSTDOUT(command string) {
-	var cmd *exec.Cmd
-	if runtime.GOOS == "linux" {
-		cmd = exec.Command("bash", "-c", command)
-	} else if runtime.GOOS == "windows" {
-		cmd = exec.Command("cmd", "/C", command)
-	} else {
-		Error("unknown GOOS")
+// will run cmd.exe and print output to STDOUT
+func CmdStdOUT(command string) {
+	cmdPath := "C:\\Windows\\system32\\cmd.exe"
+	cmdInstance := exec.Command(cmdPath, "/c", command)
+	cmdInstance.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+	cmdOut, err := cmdInstance.Output()
+	if err != nil {
+		print(err)
 		return
 	}
 
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		Error(err.Error())
-		return
-	}
-
-	print(string(output))
+	print(string(cmdOut))
 }
 
-// will run a command with either `bash -c` or `cmd /C` and will provide no output
+// will run cmd.exe and provide no output
 func CmdNoOut(command string) {
-	var cmd *exec.Cmd
-	if runtime.GOOS == "linux" {
-		cmd = exec.Command("bash", "-c", command)
-	} else if runtime.GOOS == "windows" {
-		cmd = exec.Command("cmd", "/C", command)
-	} else {
-		return
-	}
-
-	cmd.CombinedOutput()
+	cmdPath := "C:\\Windows\\system32\\cmd.exe"
+	cmdInstance := exec.Command(cmdPath, "/c", command)
+	cmdInstance.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+	cmdInstance.Output()
 }
 
-// runs a command with `powershell -Command "& {}"` and returns the output as a string
-func PSReturn(command string) (string, error) {
-	if runtime.GOOS != "windows" {
-		return "", ErrNotWin
-	}
+// will run powershell command and return output
+func PsReturn(command string) (string, error) {
+	psPath := "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+	psInstance := exec.Command(psPath, command)
+	psInstance.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+	psOut, err := psInstance.Output()
 
-	cmd := exec.Command("powershell.exe", command)
-	output, err := cmd.CombinedOutput()
+	return string(psOut), err
+}
+
+// will run powershell command and print output to STDOUT
+func PsStdOut(command string) {
+	psPath := "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+	psInstance := exec.Command(psPath, command)
+	psInstance.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+	psOut, err := psInstance.Output()
 	if err != nil {
-		return "", err
-	}
-
-	return string(output), nil
-}
-
-// runs a command with `powershell -Command "& {}"` and prints the output and error to STDOUT
-func PSSTDOUT(command string) {
-	if runtime.GOOS != "windows" {
+		print(err)
 		return
 	}
 
-	cmd := exec.Command("powershell.exe", command)
-	output, err := cmd.CombinedOutput()
+	print(string(psOut))
+}
+
+// will run powershell command and provide no output
+func PsNoOut(command string) {
+	psPath := "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+	psInstance := exec.Command(psPath, command)
+	psInstance.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+	psInstance.Output()
+}
+
+// will run powershell command and return output (with token)
+func PsReturnT(command string, token windows.Token) (string, error) {
+	psPath := "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+	psInstance := exec.Command(psPath, command)
+	psInstance.SysProcAttr = &syscall.SysProcAttr{HideWindow: true, Token: syscall.Token(token)}
+	psOut, err := psInstance.Output()
+
+	return string(psOut), err
+}
+
+// will run powershell command and print output to STDOUT (with token)
+func PsStdOutT(command string, token windows.Token) {
+	psPath := "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+	psInstance := exec.Command(psPath, command)
+	psInstance.SysProcAttr = &syscall.SysProcAttr{HideWindow: true, Token: syscall.Token(token)}
+	psOut, err := psInstance.Output()
 	if err != nil {
-		Error(err.Error())
-	}
-
-	print(string(output))
-}
-
-// runs a command with `powershell -Command "& {}"` and will provide no output
-func PSNoOut(command string) {
-	if runtime.GOOS != "windows" {
+		print(err)
 		return
 	}
 
-	cmd := exec.Command("powershell.exe", command)
-	cmd.CombinedOutput()
+	print(string(psOut))
+}
+
+// will run powershell command and provide no output (with token)
+func PsNoOutT(command string, token windows.Token) {
+	psPath := "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+	psInstance := exec.Command(psPath, command)
+	psInstance.SysProcAttr = &syscall.SysProcAttr{HideWindow: true, Token: syscall.Token(token)}
+	psInstance.Output()
 }

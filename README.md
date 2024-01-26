@@ -2,162 +2,279 @@
 <img src="https://github.com/Deranged0tter/hellsgopher/blob/main/logo/logo.PNG?raw=true" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="250" height="250" />
 Go library for malware development
 
-# ⚠️ THIS IS CURRENTLY UNDER DEVELOPMENT ⚠️
-
 # To add to your project
 ```
 go get github.com/deranged0tter/hellsgopher
 ```
 
+I recommend importing hellsgopher in the following manner:
+```
+import (
+    hg "github.com/deranged0tter/hellsgopher"
+)
+```
+This way, you can use hg.FUNCTION()
+
+# Goal
+The goal of hellsgopher is to make malware development easier to learn and get into. Since this source is public, it will most likely get burned and caught by AVs. As such it is not intended for actual use, but for learning purposes. This library is designed to only work on windows.
+
+# Contributing
+see [contributing](CONTRIBUTING.md)
+
 # Functions
 ## Command Line Functions
 ```
 CmdReturn(command string) (string, error)
-    will run a command with either `bash -c` or `cmd /C` and return the output
+    will run cmd.exe and return output
 
-CmdSTDOUT(command string)
-    will run a command with either `bash -c` or `cmd /C` and print output and error to STDOUT
+CmdStdOUT(command string)
+    will run cmd.exe and print output to STDOUT
 
 CmdNoOut(command string)
-    will run a command with either `bash -c` or `cmd /C` and will provide no output
+    will run cmd.exe and provide no output
 
-PSReturn(command string) (string, error)
-    runs a command with `powershell.exe` and returns the output as a string
+PsReturn(command string) (string, error)
+    will run powershell command and return output
 
-PSSTDOUT(command string)
-    runs a command with `powershell.exe` and prints the output and error to STDOUT
+PsStdOut(command string)
+    will run powershell command and print output to STDOUT
 
-PSNoOut(command string)
-    runs a command with `powershell.exe` and will provide no output
+PsNoOut(command string)
+    will run powershell command and provide no output
+
+PsReturnT(command string, token windows.Token) (string, error)
+    will run powershell command and return output (with token)
+
+PsStdOutT(command string, token windows.Token)
+    will run powershell command and print output to STDOUT (with token)
+
+PsNoOutT(command string, token windows.Token)
+    will run powershell command and provide no output (with token)
 ```
 
-## File Manipulation
+## File Manipulation Functions
 ```
-CopyFile(source string, destination string) error
-    copy a file
+CopyFile(sourcePath string, destinationPath string) error
+    copy a file from sourcePath to destinationPath
 
-MoveFile(source string, destination string) error
-    move a file
+MoveFile(sourcePath string, destinationPath string) error
+    move a file from sourcePath to destinationPath
 
-DeleteFile(filepath string) error
+DeleteFile(path string) error
     delete a file
 
-Chmod(filepath string, permissions os.FileMode) error
-    change the permissions of a file
+DeleteDir(dir string) error
+    delete a directory
 
-ZipFiles(files []string, zipFileName string) error
-    takes a slice of file paths and creates a zip archive. zipFileName should not include ".zip"
+Chmod(path string, perms os.FileMode) error
+    change permissions of a file
 
-DoesFileExist(filepath string) bool
-    check if a file exists. return true if it does
+ZipFiles(paths []string, zipFileName string) error
+    take a slice of file paths and creates a zip archive
+    note: zipFileName should not include ".zip"
 
-ListFiles(directory string) ([]string, error)
-    returns a slice of files in a given directory
+DoesFileExist(path string) bool
+    check if a file exists
+    returns true if file exists
 
-ListFilesInPWD() ([]string, error)
-    returns a slice of files in the present working directory
+GetPwd() (string, error)
+    return the present working dir
 
-ListFilesR(directory string) ([]string, error)
-    returns a slice of files in a given directory recursivley
+ListFiles(dir string) ([]string, error)
+    returns a slice of files in a given dir
 
-ListFilesInPWDR() ([]string, error)
-    returns a slice of iles in the present working directory recursivley
+ListFilesInPwd() ([]string, error)
+    return a slice of files in the present working dir
 
-DownloadFile(source string, destination string) error
-    download a file from a source url to destination
+DownFile(source string, dest string) error
+    download a file from a source url to a destination path
 
-ReadFileToSlice(filepath string) ([]string, error)
+ReadFileToSlice(path string) ([]string, error)
     read a file line by line and return a slice with each line as a value
 
-ReadFileToStr(filepath string) (string, error)
+ReadFileToString(path string) (string, error)
     read a file and return a string of its content
 
-ClearFile(filepath string)
-    wipe the contents of a file
+WipeFile(path string) error
+    wipe a file of all its contents (truncates the file)
 
-PrependToFile(filepath string, content string)
-    prepend text to a file (will create a new first line)
+PrependToFile(path string, s string) error
+    prepend text to a file
+    creates a new first line
 
-AppendToFile(filepath string, content string)
-    append text to a file (will create a new last line)
+AppendToFile(path string, s string) error
+    append text to a file
+    creates a new last line
+
+NewFile(path string) error
+    create a new blank file
+
+NewFileWithContent(path string, content string) error
+    create a new file containing content
 ```
 
-## Encryption
+## Encryption Functions
 ```
-RandomInt(min int64, max int64) int64
-    return a random integer between min and max
+RandomInt(min int, max int) (int, error)
+    return a random int between min and max
 
-RandomStr(length int) string
-    generates a random strength of length (uses a-zA-Z)
+RandomStr(l int) string
+    return a random string of length l
+    uses a-zA-Z
 
-Base64EncodeStr(message string) string
-    encode a string to base64 and return a string
+RandomStrI(l int) string
+    returns a random string combining letters and numbers of length l
+    uses a-zA-Z0-9
 
-Base64DecodeStr(message string) (string, error)
-    decode a string from base64 and return a string
+RandomStrFromCharset(l int, charset string) string
+    returns a random string from provided charset of length l
 
-MD5SumStr(message string) string
+Base64EncodeStr(s string) string
+    encode a string to base64
+
+Base64DecodeStr(s string) (string, error)
+    decode a string from base64
+
+Base32EncodeStr(s string) string
+    encode a string to 
+    
+Base32DecodeStr(s string) (string, error)
+    decode a string from base32
+
+Md5String(s string) string
     get the md5 hash of a string
 
-MD5SumFile(filepath string) string
+Md5File(path string) string
     get the md5 hash of a file
 
-Sha1Str(message string) string
+Sha1String(s string) string
     get the sha1 hash of a string
 
-Sha1File(filepath string) string
+Sha1File(path string) string
     get the sha1 hash of a file
 
-Sha256Str(message string) string
+Sha256String(s string) string
     get the sha256 hash of a string
 
-Sha256File(filepath string) string
+Sha256File(path string) string
     get the sha256 hash of a file
 
-Sha512Str(message string) string
+Sha512String(s string) string
     get the sha512 hash of a string
 
-Sha512File(filepath string) string
+Sha512File(path string) string
     get the sha512 hash of a file
 
-Caesar(message string, shift int) (string, error)
-    caesar cipher
+RotX(s string, shift rune) string
+    rot cipher
 ```
 
-## User Enumeration
+## User Enumeartion Functions
 ```
-GetUsername() (string, error)
-    returns the username of the user the process is running under
+GetCurrentUser() (*user.User, error)
+    return a user.User for the current user
 
-GetDisplayName() (string, error)
-    returns the display name of the user the process is running under
+GetCurrentUsername() (string, error)
+    get the current username
 
-GetUID() (string, error)
-    returns the user id of the user the process is running under
+GetCurrentUid() (string, error)
+    get the current uid
 
-GetGID() (string, error)
-    returns the group id of the user the process is running under
+GetCurrentGid() (string, error)
+    get the main gid for the current user
 
-ListUsers() ([]string, error)
-    list all the users on the systen
+GetCurrentGids() ([]string, error)
+    get all gids for the current user
+
+GetUidFromName(name string) (string, error)
+    return a uid from a given username
+
+GetNameFromUid(uid string) (string, error)
+    return a username from a given uid
+
+GetUserFromName(name string) (*user.User, error)
+    return a user.User from username
+
+GetUserFromUid(uid string) (*user.User, error)
+    return a user.User from uid
+
+GetAllUsers() ([]*user.User, error)
+    return a slice of all users on the machine
+
+GetAllUsernames() ([]string, error)
+    return a slice of all usernames on the machine
 ```
 
-## System Enumeration
+## System Enumeration Functions
 ```
-GetHostname() string
-    returns the computer's hostname
+GetHostname() (string, error)
+    return the machine's hostname
 
-GetDomainName() string
-    return the domain name of the computer
+GetDomainName() (string, error)
+    return the domain name of the machine
 
 GetOS() string
-    return the operating system of the computer
+    return the machine's OS
 
 GetOSBuild() string
-    return the OS build of the computer
+    return the machine's OS Build Number
 
 GetOSVersion() string
-    return the OS version of the computer
+    return the machine's OS Version
+```
+
+## Process Enumeration Functions
+```
+GetPidFromName(name string) ([]int, error)
+    return the pid(s) from the process name
+
+GetNameFromPid(pid int) (string, error)
+    get the name from the pid
+
+ListAllProcesses() ([]WinProcess, error)
+    list all running processes
+
+GetCurrentPid() int
+    get the pid of current process
+
+GetCurrentPpid() int
+    get ppid of current process
+
+GetCurrentProcPath() (string, error)
+    get the path of the current process
+
+GetCurrentProcName() (string, error)
+    get the name of the current process
+
+GetCurrentProcArch() string
+    get the arch of the current process
+```
+
+## Network Enumeration Functions
+
+## Shellcode Functions
+
+## Injection Functions
+
+## Scanning Functions
+
+## Evasion Functions
+
+## Anti-Sandbox Functions
+If you only want the Anti-Sandboxing functions, I have a [library](https://github.com/deranged0tter/govm) for you!
+
+## Anti-Forensics Functions
+
+## Token Manipulation Functions
+```
+GetCurrentToken() (windows.Token, error)
+    get the token from the current process
+
+GetTokenFromPid(pid int) (windows.Token, error)
+    get the token from a process given its pid
+
+GetTokenFromName(procName string) (windows.Token, error)
+    get the token from a process given its process name
 ```
 
 ## Logging Functions
@@ -175,38 +292,20 @@ Info(message string)
     output an information message to STDOUT ("[*] message")
 ```
 
-## Process Enumeration
+## Other Functions
+
+# 3rd Party Libraries
 ```
-ListProcesses() (map[int]string, error)
-    returns a map of all process currently running
-
-GetCurrentProcessID() int
-    return the PID of the current process
-
-GetCurrentParentProcessID() int
-    return the PPID of the current process
-
-GetCurrentProcessPath() (string, error)
-    return the process path of the current process
-
-GetCurrentProcessName() string
-    return the name of the current process
-
-GetCurrentProcessArch() string
-    return the arch of the current process
+github.com/fourcorelabs/wintoken
 ```
+Thank you to the creators of these projects!
 
-## Network Enumeration
-```
-GetInternalIP() string
-    get the internal IP of the computer
+# Liability
+The creator nor any person who has contributed to this project is liable for any kind of malicious of illegal use of this software. Only use this on targets, systems, networks, etc that you have own and/or have permission to use on.
 
-GetAllInterfaces() []string
-    return a slice of all interfaces on computer
-```
+DO NOT USE THIS FOR:
+- illegal actions
+- malicious actions
+- damaging actions to property you do not have direct permission to use this on
 
-## Other
-```
-GenerateName() string
-    return a string equaling to "adj_noun"
-```
+Any use of this software for illegal actions is not the responsibility of the creator or any contributor of this project. We hold no liability for any actions taken by this software.
