@@ -242,6 +242,9 @@ GetOSBuild() string
 
 GetOSVersion() string
     return the machine's OS Version
+
+Uptime() int
+    return the machine's uptime in seconds
 ```
 
 ## Process Enumeration Functions

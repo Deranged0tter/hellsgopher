@@ -5,6 +5,7 @@ import (
 	"runtime"
 	"strings"
 	"syscall"
+	"time"
 
 	"golang.org/x/sys/windows"
 )
@@ -92,4 +93,16 @@ func GetOSVersion() string {
 		}
 	}
 	return "Windows " + osName
+}
+
+// return the uptime of the machine in seconds
+func Uptime() int {
+	kernel32 := windows.NewLazySystemDLL("kernel32")
+	GetTicketCount64 := kernel32.NewProc("GetTickCount64")
+
+	r1, _, _ := GetTicketCount64.Call(0, 0, 0, 0)
+
+	uptime := time.Duration(r1) * time.Millisecond
+
+	return int(uptime.Seconds())
 }
