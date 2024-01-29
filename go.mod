@@ -5,6 +5,7 @@ go 1.20
 require golang.org/x/sys v0.16.0
 
 require (
+	github.com/Binject/debug v0.0.0-20230508195519-26db73212a7a
 	github.com/fourcorelabs/wintoken v1.0.0
 	github.com/go-ping/ping v1.1.0
 )

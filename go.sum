@@ -1,3 +1,5 @@
+github.com/Binject/debug v0.0.0-20230508195519-26db73212a7a h1:4c0nc0krv8eh7gD809n+swLaCuFyHpxdrxwx0ZmHvBw=
+github.com/Binject/debug v0.0.0-20230508195519-26db73212a7a/go.mod h1:QzgxDLY/qdKlvnbnb65eqTedhvQPbaSP2NqIbcuKvsQ=
 github.com/fourcorelabs/wintoken v1.0.0 h1:dskUYLAFHNy1cbS5MXsNFXauQzxieTrZlffQZ0Yu19I=
 github.com/fourcorelabs/wintoken v1.0.0/go.mod h1:jKyXHt079W09KwEMbUC9g+R2KDs5kVvSKPUiF5p0ejs=
 github.com/go-ping/ping v1.1.0 h1:3MCGhVX4fyEUuhsfwPrsEdQw6xspHkv5zHsiSoDFZYw=

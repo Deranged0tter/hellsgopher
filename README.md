@@ -285,6 +285,12 @@ IsHostUp(host string) (bool, error)
 ```
 
 ## Evasion Functions
+```
+CheckHooks(path string) ([]string, error)
+    detect whether any functions in a dll are hooked by AV/EDR
+    defaults to NTDLL, provide blank string for default
+    otherwise provide a full path to dll
+```
 
 ## Anti-Sandbox Functions
 If you only want the Anti-Sandboxing functions, I have a [library](https://github.com/deranged0tter/govm) for you!
@@ -324,8 +330,9 @@ Info(message string)
 ```
 github.com/fourcorelabs/wintoken
 github.com/go-ping/ping
+github.com/Binject/debug/pe
 ```
-Thank you to the creators of these projects!
+Thank you to the creators of these amazing projects!
 
 # Liability
 The creator nor any person who has contributed to this project is liable for any kind of malicious of illegal use of this software. Only use this on targets, systems, networks, etc that you have own and/or have permission to use on.
