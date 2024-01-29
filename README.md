@@ -124,6 +124,18 @@ GenerateKey() ([]byte, error)
 GenerateIV() ([]byte, error)
     generate a 16 byte secure IV
 
+EncryptBytes(message []byte, key []byte) ([]byte, error)
+    encrypt a []byte using given key
+
+EncryptString(s string, key []byte) ([]byte, error)
+    return encrypted string using given key
+
+DecryptBytes(message []byte, key []byte) ([]byte, error)
+    decrypt []byte with given key
+
+DecryptString(s string, key []byte) (string, error)
+    return a decrypted string using given key
+
 RandomInt(min int, max int) (int, error)
     return a random int between min and max
 
@@ -266,6 +278,11 @@ GetCurrentProcArch() string
 ## Injection Functions
 
 ## Scanning Functions
+```
+IsHostUp(host string) (bool, error)
+    ping a given ip
+    returns true if host is up
+```
 
 ## Evasion Functions
 

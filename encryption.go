@@ -71,17 +71,39 @@ func EncryptBytes(message []byte, key []byte) ([]byte, error) {
 }
 
 // return encrypted string using given key
-func EncryptString(s string, key []byte) (string, error) {
-	c, err := EncryptBytes([]byte(s), key)
+func EncryptString(s string, key []byte) ([]byte, error) {
+	return EncryptBytes([]byte(s), key)
+}
+
+// decrypt []byte with given key
+func DecryptBytes(message []byte, key []byte) ([]byte, error) {
+	iv := message[0:16]
+	cText := message[16:]
+
+	cipherBlock, err := aes.NewCipher(key)
+	if err != nil {
+		return nil, err
+	}
+
+	c := cipher.NewCBCDecrypter(cipherBlock, iv)
+	d := make([]byte, len(cText))
+	c.CryptBlocks(d, cText)
+
+	lenBytes := d[0:4]
+	len := binary.LittleEndian.Uint32(lenBytes)
+	d = d[4:]
+	return d[:len], nil
+}
+
+// return a decrypted string using given key
+func DecryptString(s string, key []byte) (string, error) {
+	d, err := DecryptBytes([]byte(s), key)
 	if err != nil {
 		return "", err
 	}
 
-	return string(c), nil
+	return string(d), nil
 }
-
-// decrypt []byte with given key
-func Decrypt
 
 // return a random int between min and max
 func RandomInt(min int, max int) (int, error) {

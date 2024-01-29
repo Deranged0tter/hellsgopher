@@ -6,11 +6,11 @@ import (
 
 // ping a given ip
 // returns true if host is up
-func IsHostUp(ip string) (bool, error) {
+func IsHostUp(host string) (bool, error) {
 	var isUp bool
 
 	// new pinger
-	pinger, err := ping.NewPinger(ip)
+	pinger, err := ping.NewPinger(host)
 	if err != nil {
 		return false, err
 	}
