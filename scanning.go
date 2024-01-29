@@ -6,7 +6,7 @@ import (
 
 // ping a given ip
 // returns true if host is up
-func Ping(ip string) (bool, error) {
+func IsHostUp(ip string) (bool, error) {
 	var isUp bool
 
 	// new pinger

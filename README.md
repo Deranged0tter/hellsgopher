@@ -115,6 +115,15 @@ NewFileWithContent(path string, content string) error
 
 ## Encryption Functions
 ```
+GenerateSecureBytes(l int) ([]byte, error)
+    generate a secure []byte of length l
+
+GenerateKey() ([]byte, error)
+    generate a 32 byte secure key
+
+GenerateIV() ([]byte, error)
+    generate a 16 byte secure IV
+
 RandomInt(min int, max int) (int, error)
     return a random int between min and max
 

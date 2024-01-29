@@ -1,6 +1,8 @@
 package hellsgopher
 
 import (
+	"crypto/aes"
+	"crypto/cipher"
 	"crypto/md5"
 	cr "crypto/rand"
 	"crypto/sha1"
@@ -8,6 +10,7 @@ import (
 	"crypto/sha512"
 	"encoding/base32"
 	"encoding/base64"
+	"encoding/binary"
 	"encoding/hex"
 	"io"
 	"math/big"
@@ -15,6 +18,70 @@ import (
 	"os"
 	"strings"
 )
+
+// generate a secure []byte of length l
+func GenerateSecureBytes(l int) ([]byte, error) {
+	randBytes := make([]byte, l)
+
+	_, err := cr.Read(randBytes)
+	if err != nil {
+		return nil, err
+	}
+
+	return randBytes, nil
+}
+
+// generate a 32 byte secure key
+func GenerateKey() ([]byte, error) {
+	return GenerateSecureBytes(32)
+}
+
+// generate a 16 byte secure IV
+func GenerateIV() ([]byte, error) {
+	return GenerateSecureBytes(16)
+}
+
+// encrypt a []byte using given key
+func EncryptBytes(message []byte, key []byte) ([]byte, error) {
+	cipherBlock, err := aes.NewCipher(key)
+	if err != nil {
+		return nil, err
+	}
+
+	lenToByte := make([]byte, 4)
+	binary.LittleEndian.PutUint32(lenToByte, uint32(len(message)))
+
+	lenAndSecret := append(lenToByte, message...)
+
+	iv, err := GenerateIV()
+	if err != nil {
+		return nil, err
+	}
+
+	if len(lenAndSecret)%16 != 0 {
+		a := make([]byte, (16 - len(lenAndSecret)%16))
+		lenAndSecret = append(lenAndSecret, a...)
+	}
+
+	c := cipher.NewCBCEncrypter(cipherBlock, iv)
+	e := make([]byte, len(lenAndSecret))
+	c.CryptBlocks(e, lenAndSecret)
+
+	return append(iv, e...), nil
+}
+
+// return encrypted string using given key
+func EncryptString(s string, key []byte) (string, error) {
+	c, err := EncryptBytes([]byte(s), key)
+	if err != nil {
+		return "", err
+	}
+
+	return string(c), nil
+}
+
+// decrypt []byte with given key
+func Decrypt
 
 // return a random int between min and max
 func RandomInt(min int, max int) (int, error) {
