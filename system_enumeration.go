@@ -106,3 +106,31 @@ func Uptime() int {
 
 	return int(uptime.Seconds())
 }
+
+// return a slice of pipes on system
+func GetPipes() ([]string, error) {
+	var pipes []string
+	pipePref := `\\.\pipe\`
+	var data windows.Win32finddata
+
+	handle, err := windows.FindFirstFile(windows.StringToUTF16Ptr(pipePref+"*"), &data)
+	if err != nil {
+		return nil, err
+	}
+	defer windows.FindClose(handle)
+
+	for {
+		pipeName := windows.UTF16ToString(data.FileName[:])
+		pipes = append(pipes, pipeName)
+
+		if err := windows.FindNextFile(handle, &data); err != nil {
+			if err == windows.ERROR_NO_MORE_FILES {
+				break
+			}
+
+			return pipes, err
+		}
+	}
+
+	return pipes, nil
+}

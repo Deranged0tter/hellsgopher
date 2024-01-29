@@ -245,6 +245,9 @@ GetOSVersion() string
 
 Uptime() int
     return the machine's uptime in seconds
+
+GetPipes() ([]string, error)
+    return a slice of all pipes on the machine
 ```
 
 ## Process Enumeration Functions
