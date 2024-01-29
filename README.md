@@ -248,6 +248,9 @@ Uptime() int
 
 GetPipes() ([]string, error)
     return a slice of all pipes on the machine
+
+GetEnvironmentVariables() []string
+    return a slice of environment variables on system
 ```
 
 ## Process Enumeration Functions
@@ -288,6 +291,16 @@ GetCurrentProcArch() string
 IsHostUp(host string) (bool, error)
     ping a given ip
     returns true if host is up
+
+IsUrlUp(url string) bool
+    check if a given url is up
+    returns true if url is up
+
+ScanPortsCommon(host string) []int
+    scan the top 500 most common ports on a host
+
+ScanPortsAll(host string) []int
+    scan all ports on a host
 ```
 
 ## Evasion Functions

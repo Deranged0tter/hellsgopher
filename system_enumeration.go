@@ -2,6 +2,7 @@ package hellsgopher
 
 import (
 	"fmt"
+	"os"
 	"runtime"
 	"strings"
 	"syscall"
@@ -133,4 +134,9 @@ func GetPipes() ([]string, error) {
 	}
 
 	return pipes, nil
+}
+
+// return a slice of environment variables on system
+func GetEnvironmentVariables() []string {
+	return os.Environ()
 }
