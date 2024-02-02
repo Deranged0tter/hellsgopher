@@ -313,6 +313,22 @@ CheckHooks(path string) ([]string, error)
 
 ## Anti-Sandbox Functions
 If you only want the Anti-Sandboxing functions, I have a [library](https://github.com/deranged0tter/govm) for you!
+```
+VmCheckFiles() (bool, error)
+    check if known VM files exist on system
+
+VmCheckProcesses() (bool, error)
+    check if known VM related processes are running
+
+VmCheckCores(count int) (bool, error)
+    check whether the machine has less than or equal to x number of cores (default is 2, leave as 0 for default)
+
+VmCheckRam(mb uint64) (bool, error)
+    check whether the machine has less than or equal to x mb of ram (default is 4196, leave as 0 for default)
+
+VmCheckOnline() bool
+    check if machine can access 8.8.8.8
+```
 
 ## Anti-Forensics Functions
 
